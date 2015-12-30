@@ -7,7 +7,6 @@ import com.orm.SugarDb;
 import com.orm.util.NamingHelper;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static com.orm.SugarContext.getSugarContext;
@@ -33,7 +32,7 @@ public class SugarInit {
      * 为每一个model创建一个数据库的表
      * @param models
      */
-    public static void CreateTable(Class[] models) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static void CreateTable(Class[] models) {
         for(Class model:models){
             StringBuilder createTable = new StringBuilder();
             createTable.append("CREATE TABLE ");
@@ -67,15 +66,16 @@ public class SugarInit {
         return NamingHelper.toSQLName(model);
     }
 
-    private static void CreateTable(String createTable) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Method getSugarDb = SugarContext.class.getDeclaredMethod("getSugarDb", new Class[]{});
-        getSugarDb.setAccessible(true);
-        SugarDb db = (SugarDb) getSugarDb.invoke(getSugarContext());
-        SQLiteDatabase sqLiteDatabase = db.getDB();
-        try{
+    private static void CreateTable(String createTable) {
+        try {
+            Method getSugarDb = SugarContext.class.getDeclaredMethod("getSugarDb", new Class[]{});
+            getSugarDb.setAccessible(true);
+            SugarDb db = (SugarDb) getSugarDb.invoke(getSugarContext());
+            SQLiteDatabase sqLiteDatabase = db.getDB();
             sqLiteDatabase.execSQL(createTable);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 }

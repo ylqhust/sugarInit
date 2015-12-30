@@ -14,15 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SugarContext.init(getApplicationContext());
-        try {
-            SugarInit.CreateTable(new Class[]{User.class,Book.class});
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        SugarInit.CreateTable(new Class[]{User.class,Book.class});
         User user = null;
         Book book = null;
         try {
